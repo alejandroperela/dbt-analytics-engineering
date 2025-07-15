@@ -22,7 +22,7 @@ final AS (
         orders.order_id,
         orders.customer_id,
         orders.order_date,
-        coalesce (order_payments.amount, 0) as amount
+        coalesce(order_payments.amount, 0) as amount
     FROM orders
     LEFT JOIN order_payments 
     ON orders.order_id = order_payments.order_id
@@ -30,3 +30,7 @@ final AS (
 
 SELECT * 
 FROM final
+--{% if is_incremental() %}
+    -- this filter will only be applied on an incremental run
+--    where order_date > (select max(order_date) from {{ this }}) 
+--{% endif %}
